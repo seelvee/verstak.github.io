@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="ВЕРСТАК — авторская мастерская Виктора Ничкова. Минималистичные объекты в черно-белой эстетике: мебель, светильники, блокноты, кастом-дизайн." />
+  <title>ВЕРСТАК — мастерская Виктора Ничкова</title>
+
+  <!-- Favicon: черный круг -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='26' fill='black'/%3E%3C/svg%3E">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#0b0b0b;
+      --muted:#6f6f6f;
+      --line:#d9d9d9;
+      --soft:#f3f3f3;
+      --inv-bg:#0b0b0b;
+      --inv-fg:#ffffff;
+
+      --max: 1180px;
+      --pad: clamp(18px, 4vw, 44px);
+
+      --h1: clamp(34px, 5vw, 64px);
+      --h2: clamp(22px, 3vw, 34px);
+      --p:  clamp(14px, 1.2vw, 16px);
+
+      --r: 18px;
+      --r2: 26px;
+      --shadow: 0 18px 40px rgba(0,0,0,.08);
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica, sans-serif;
+      letter-spacing: .2px;
+    }
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    .wrap{ width:min(var(--max), 100% - (var(--pad)*2)); margin-inline:auto; }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(14px, 2vw, 24px);
+      align-items:start;
+    }
+
+    /* Top minimal nav (очень тихий) */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .topbar .in{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 0;
+    }
+    .brand-mini{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      user-select:none;
+    }
+    .dot{
+      width:12px;height:12px;border-radius:999px;background:#000;
+    }
+    .brand-mini b{
+      letter-spacing:.22em;
+      font-size:12px;
+    }
+    .nav{
+      display:flex;
+      gap: 18px;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .nav a{ opacity:.72; }
+    .nav a:hover{ opacity:1; }
+
+    /* Sections */
+    section{ padding: clamp(54px, 7vw, 110px) 0; }
+    .sep{ border-top:1px solid var(--line); }
+
+    /* Hero */
+    .hero{
+      padding-top: clamp(42px, 6vw, 84px);
+    }
+    .hero-card{
+      grid-column: 1 / -1;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: var(--r2);
+      padding: clamp(20px, 4vw, 44px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:auto -140px -180px auto;
+      width: 520px;
+      height: 520px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,0,0,.14), rgba(0,0,0,0) 62%);
+      pointer-events:none;
+      transform: rotate(12deg);
+    }
+
+    .hero-left{ grid-column: 1 / span 7; }
+    .hero-right{ grid-column: 8 / -1; display:flex; justify-content:flex-end; }
+
+    .mark{
+      width: min(320px, 44vw);
+      aspect-ratio:1/1;
+      border-radius:999px;
+      background: #000;
+      position:relative;
+      box-shadow: 0 26px 70px rgba(0,0,0,.20);
+      transform: translateY(2px);
+    }
+    .mark::after{
+      content:"";
+      position:absolute;
+      inset: 12%;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    h1{
+      margin:0 0 14px 0;
+      font-size: var(--h1);
+      line-height: 1.02;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .sub{
+      margin:0;
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height: 1.55;
+      color: rgba(0,0,0,.78);
+      max-width: 58ch;
+    }
+    .meta{
+      margin-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px 12px;
+      align-items:center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+    .pill{
+      border: 1px solid rgba(0,0,0,.16);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.7);
+    }
+
+    .actions{
+      margin-top: 26px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      border-radius: 999px;
+      padding: 12px 16px;
+      border: 1px solid rgba(0,0,0,.14);
+      font-size: 13px;
+      letter-spacing:.1em;
+      text-transform: uppercase;
+      transition: transform .18s var(--ease), background .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease), opacity .18s var(--ease);
+      user-select:none;
+      cursor:pointer;
+      background:#fff;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn-primary{
+      background:#000; color:#fff; border-color:#000;
+    }
+    .btn-primary:hover{ opacity:.92; }
+    .btn-ghost:hover{ background: rgba(0,0,0,.04); }
+
+    .ico{
+      width: 16px; height: 16px; display:inline-block;
+    }
+
+    /* About */
+    .h2{
+      font-size: var(--h2);
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      margin:0 0 18px 0;
+    }
+    .about .text{
+      grid-column: 1 / span 8;
+      font-size: var(--p);
+      line-height: 1.9;
+      color: rgba(0,0,0,.82);
+    }
+    .about .aside{
+      grid-column: 9 / -1;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: var(--r);
+      padding: 18px 18px;
+      background: #fff;
+    }
+    .aside .k{
+      font-size:12px;
+      text-transform: uppercase;
+      letter-spacing:.12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .aside .v{
+      font-size:14px;
+      line-height:1.6;
+      margin:0 0 12px 0;
+    }
+    .aside .line{
+      height:1px; background: rgba(0,0,0,.08);
+      margin: 14px 0;
+    }
+
+    /* Gallery */
+    .gallery .head{
+      grid-column: 1 / -1;
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap: 18px;
+      margin-bottom: 8px;
+    }
+    .gallery .hint{
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+    .tiles{
+      grid-column: 1 / -1;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(12px, 2vw, 18px);
+    }
+    .work{
+      position:relative;
+      border-radius: var(--r);
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.10);
+      background: var(--soft);
+      cursor:pointer;
+      min-height: clamp(180px, 22vw, 320px);
+      transition: transform .22s var(--ease), box-shadow .22s var(--ease);
+    }
+    .work:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.10);
+    }
+    .work img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: grayscale(100%) contrast(1.08);
+      transform: scale(1.01);
+      transition: transform .35s var(--ease), filter .35s var(--ease);
+    }
+    .work:hover img{ transform: scale(1.05); filter: grayscale(100%) contrast(1.12); }
+    .work::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.22), rgba(0,0,0,0) 42%);
+      opacity:0;
+      transition: opacity .25s var(--ease);
+      pointer-events:none;
+    }
+    .work:hover::after{ opacity:1; }
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 28px;
+      z-index: 100;
+    }
+    .modal.open{ display:flex; }
+    .modal-card{
+      width:min(1100px, 96vw);
+      max-height: 86vh;
+      border-radius: var(--r2);
+      overflow:hidden;
+      background:#000;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 30px 90px rgba(0,0,0,.35);
+      position:relative;
+    }
+    .modal-card img{
+      width:100%;
+      height:100%;
+      max-height: 86vh;
+      object-fit:contain;
+      filter: grayscale(100%) contrast(1.08);
+      background:#000;
+    }
+    .modal-close{
+      position:absolute;
+      top: 12px;
+      right: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition: transform .2s var(--ease), background .2s var(--ease);
+    }
+    .modal-close:hover{ background: rgba(255,255,255,.10); }
+    .modal-close:active{ transform: translateY(1px); }
+
+    /* Contact (inverted) */
+    .contact{
+      background: var(--inv-bg);
+      color: var(--inv-fg);
+    }
+    .contact .h2{ color:#fff; }
+    .contact .grid{ align-items:stretch; }
+    .contact .lead{
+      grid-column: 1 / span 6;
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height: 1.35;
+      margin:0;
+      letter-spacing:.02em;
+    }
+    .contact .box{
+      grid-column: 7 / -1;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--r2);
+      padding: 18px;
+      background: rgba(255,255,255,.04);
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    label{
+      font-size: 11px;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.72);
+    }
+    input, textarea{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color:#fff;
+      padding: 12px 12px;
+      outline: none;
+      font: inherit;
+      font-size: 14px;
+      transition: border-color .2s var(--ease), background .2s var(--ease);
+    }
+    textarea{ min-height: 108px; resize: vertical; }
+    input:focus, textarea:focus{
+      border-color: rgba(255,255,255,.38);
+      background: rgba(0,0,0,.26);
+    }
+
+    .contact .actions{
+      margin-top: 12px;
+      gap: 10px;
+    }
+    .contact .btn{
+      border-color: rgba(255,255,255,.16);
+      background: transparent;
+      color:#fff;
+    }
+    .contact .btn-primary{
+      background:#fff; color:#000; border-color:#fff;
+    }
+    .contact .btn-primary:hover{ opacity:.94; }
+
+    .fine{
+      margin-top: 14px;
+      color: rgba(255,255,255,.68);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .footer{
+      padding: 18px 0 28px;
+      color: rgba(255,255,255,.54);
+      font-size: 12px;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,.10);
+      margin-top: 34px;
+    }
+
+    /* Reveal on scroll (очень мягко) */
+    .reveal{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.on{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero-left{ grid-column: 1 / -1; }
+      .hero-right{ grid-column: 1 / -1; justify-content:flex-start; margin-top: 18px; }
+      .mark{ width: min(240px, 58vw); }
+      .about .text{ grid-column: 1 / -1; }
+      .about .aside{ grid-column: 1 / -1; }
+      .tiles{ grid-template-columns: repeat(2, 1fr); }
+      .contact .lead{ grid-column: 1 / -1; }
+      .contact .box{ grid-column: 1 / -1; margin-top: 12px; }
+    }
+    @media (max-width: 520px){
+      .tiles{ grid-template-columns: 1fr; }
+      .nav{ display:none; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; }
+      html{ scroll-behavior:auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sticky minimal topbar -->
+  <div class="topbar" role="banner">
+    <div class="wrap">
+      <div class="in">
+        <div class="brand-mini" aria-label="ВЕРСТАК">
+          <span class="dot" aria-hidden="true"></span>
+          <b>ВЕРСТАК</b>
+        </div>
+        <nav class="nav" aria-label="Навигация">
+          <a href="#about">О мастерской</a>
+          <a href="#works">Работы</a>
+          <a href="#contact">Контакты</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="grid hero-card reveal">
+        <div class="hero-left">
+          <h1>ВЕРСТАК</h1>
+          <p class="sub">
+            Авторская мастерская Виктора Ничкова.
+            Уникальные минималистичные объекты: мебель, светильники, блокноты, кастом-дизайн.
+            Чёрно-белый стиль, чистые линии и максимум эстетики.
+          </p>
+
+          <div class="meta" aria-label="Ключевые акценты">
+            <span class="pill">Минимализм</span>
+            <span class="pill">Индустриальная эстетика</span>
+            <span class="pill">Авторская работа</span>
+            <span class="pill">Чёрное / белое</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn btn-primary" id="heroTelegram" href="#" role="button">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M21.8 5.1c.2-1-0.7-1.8-1.7-1.4L3.2 10.2c-1 .4-.9 1.8.1 2.1l4.4 1.4 1.7 5.2c.3 1 1.6 1.1 2 .2l2.5-3.6 4.6 3.4c.8.6 2 .1 2.2-.9l1.1-12.5Z" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              Связаться в Telegram
+            </a>
+            <a class="btn btn-ghost" href="#contact" role="button">Обсудить проект</a>
+          </div>
+        </div>
+
+        <div class="hero-right" aria-hidden="true">
+          <div class="mark" title="Логотип: круг"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about sep">
+    <div class="wrap">
+      <div class="grid">
+        <div class="text reveal">
+          <h2 class="h2">О мастерской</h2>
+          <p style="margin:0;">
+            Минимализм и брутальная эстетика. ВЕРСТАК — это пространство, где рождаются предметы с характером.
+            Каждый объект, созданный Виктором Ничковым, сочетает современный минимализм с индустриальной простотой
+            и функциональностью. Никаких лишних деталей: только чистые линии, геометрия формы и контраст черного с белым.
+            Этот подход позволяет достичь визуальной чистоты и подчеркнуть материал и форму.
+            Мастерская работает для тех, кто ценит эстетику лаконичности: молодых создателей, дизайнеров интерьеров,
+            архитекторов и всех любителей кастомных решений. Здесь идея обретает форму без компромиссов — строго, стильно, уникально.
+          </p>
+        </div>
+
+        <aside class="aside reveal" aria-label="Коротко">
+          <div class="k">Формат</div>
+          <p class="v">Индивидуальные изделия и небольшие серии. Фокус — итоговый объект, а не процесс.</p>
+          <div class="line"></div>
+          <div class="k">Категории</div>
+          <p class="v">Мебель, светильники, блокноты, кастомные предметы для интерьера и брендов.</p>
+          <div class="line"></div>
+          <div class="k">Эстетика</div>
+          <p class="v" style="margin:0;">Чёрно-белая палитра, геометрия, визуальная тишина и точные пропорции.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS -->
+  <section id="works" class="gallery">
+    <div class="wrap">
+      <div class="grid">
+        <div class="head reveal">
+          <h2 class="h2" style="margin:0;">Работы</h2>
+          <div class="hint">Только итоговые объекты. Нажмите на фото, чтобы открыть крупно.</div>
+        </div>
+
+        <!--
+          ЗАМЕНА ФОТО:
+          1) Положите свои изображения в папку assets/
+          2) Назовите их work-01.jpg ... work-09.jpg (или поменяйте src ниже)
+          3) Изображения автоматически приводятся к монохрому (grayscale) CSS-фильтром
+        -->
+        <div class="tiles reveal" aria-label="Галерея работ">
+          <button class="work" type="button" data-full="assets/work-01.jpg" aria-label="Открыть работу 1">
+            <img src="assets/work-01.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><circle cx=%22600%22 cy=%22400%22 r=%22160%22 fill=%22%230b0b0b%22 opacity=%220.16%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-02.jpg" aria-label="Открыть работу 2">
+            <img src="assets/work-02.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><rect x=%22240%22 y=%22220%22 width=%22720%22 height=%22360%22 fill=%22%230b0b0b%22 opacity=%220.12%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-03.jpg" aria-label="Открыть работу 3">
+            <img src="assets/work-03.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><path d=%22M300 560 L600 200 L900 560 Z%22 fill=%22%230b0b0b%22 opacity=%220.12%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-04.jpg" aria-label="Открыть работу 4">
+            <img src="assets/work-04.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><circle cx=%22440%22 cy=%22410%22 r=%22130%22 fill=%22%230b0b0b%22 opacity=%220.12%22/><circle cx=%22780%22 cy=%22410%22 r=%22130%22 fill=%22%230b0b0b%22 opacity=%220.08%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-05.jpg" aria-label="Открыть работу 5">
+            <img src="assets/work-05.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><rect x=%22290%22 y=%22210%22 width=%22620%22 height=%22380%22 rx=%2240%22 fill=%22%230b0b0b%22 opacity=%220.10%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-06.jpg" aria-label="Открыть работу 6">
+            <img src="assets/work-06.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><path d=%22M260 520 H940%22 stroke=%22%230b0b0b%22 stroke-width=%2216%22 opacity=%220.10%22/><path d=%22M340 340 H860%22 stroke=%22%230b0b0b%22 stroke-width=%2216%22 opacity=%220.08%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-07.jpg" aria-label="Открыть работу 7">
+            <img src="assets/work-07.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><circle cx=%22600%22 cy=%22400%22 r=%22210%22 fill=%22%230b0b0b%22 opacity=%220.09%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-08.jpg" aria-label="Открыть работу 8">
+            <img src="assets/work-08.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><rect x=%22340%22 y=%22240%22 width=%22520%22 height=%22320%22 fill=%22%230b0b0b%22 opacity=%220.11%22/><rect x=%22380%22 y=%22280%22 width=%22440%22 height=%22240%22 fill=%22%230b0b0b%22 opacity=%220.06%22/></svg>'">
+          </button>
+          <button class="work" type="button" data-full="assets/work-09.jpg" aria-label="Открыть работу 9">
+            <img src="assets/work-09.jpg" alt="" loading="lazy"
+                 onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22800%22><rect width=%221200%22 height=%22800%22 fill=%22%23f3f3f3%22/><path d=%22M320 520 C460 260, 740 260, 880 520%22 stroke=%22%230b0b0b%22 stroke-width=%2218%22 fill=%22none%22 opacity=%220.10%22/></svg>'">
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="grid">
+        <div class="reveal" style="grid-column:1/-1;">
+          <h2 class="h2">Контакты</h2>
+        </div>
+
+        <p class="lead reveal">
+          Есть идея? Давайте создадим что-то особенное.
+          <span style="display:block; margin-top:10px; color:rgba(255,255,255,.72); font-size:14px; line-height:1.55;">
+            Минимум формы — максимум смысла.
+          </span>
+        </p>
+
+        <div class="box reveal" aria-label="Связаться">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M21.8 5.1c.2-1-0.7-1.8-1.7-1.4L3.2 10.2c-1 .4-.9 1.8.1 2.1l4.4 1.4 1.7 5.2c.3 1 1.6 1.1 2 .2l2.5-3.6 4.6 3.4c.8.6 2 .1 2.2-.9l1.1-12.5Z" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              <div>
+                <div style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.72);">Telegram</div>
+                <div style="font-size:14px; margin-top:2px;">Напрямую к Виктору</div>
+              </div>
+            </div>
+
+            <a class="btn btn-primary" id="contactTelegram" href="#" role="button">Написать в Telegram</a>
+          </div>
+
+          <form id="leadForm" class="row" style="margin-top:16px;">
+            <div class="row">
+              <label for="name">Ваше имя</label>
+              <input id="name" name="name" type="text" autocomplete="name" placeholder="Например: Анна" />
+            </div>
+
+            <div class="row">
+              <label for="idea">Идея или запрос</label>
+              <textarea id="idea" name="idea" placeholder="Коротко: что нужно, размеры, материал, сроки, ориентир по бюджету"></textarea>
+            </div>
+
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">Отправить заявку</button>
+              <button class="btn" type="button" id="copyDraft">Скопировать текст заявки</button>
+            </div>
+
+            <div class="fine" id="formNote">
+              Оставьте заявку — и Виктор свяжется с вами лично.
+              <div style="margin-top:10px; opacity:.9;">Виктор Ничков, мастерская «ВЕРСТАК»</div>
+            </div>
+          </form>
+
+          <div class="footer">
+            © 2026 Viktor Nichkov
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for gallery -->
+  <div class="modal" id="modal" aria-hidden="true" aria-label="Просмотр изображения" role="dialog">
+    <div class="modal-card" role="document">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть">
+        <span style="font-size:18px; line-height:1;">×</span>
+      </button>
+      <img id="modalImg" alt="" />
+    </div>
+  </div>
+
+  <script>
+    // ====== НАСТРОЙКА TELEGRAM ======
+    // ВАЖНО: замените на ваш username без @
+    const TELEGRAM_USERNAME = "verstak_username"; // <-- поменять
+
+    // Формат deep link + web link: официальный справочник Telegram по ссылкам. :contentReference[oaicite:1]{index=1}
+    function tgDraftLink(text) {
+      const encoded = encodeURIComponent(text);
+      const web = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}&profile`;
+      const deep = `tg://resolve?domain=${TELEGRAM_USERNAME}&text=${encoded}&profile`;
+      return { web, deep };
+    }
+
+    function openTelegram(text) {
+      const { web, deep } = tgDraftLink(text);
+      // Пытаемся открыть приложение, затем — web fallback.
+      // Некоторые браузеры блокируют deep links; fallback гарантирует, что пользователь не "зависнет".
+      window.location.href = deep;
+      setTimeout(() => {
+        window.open(web, "_blank", "noopener,noreferrer");
+      }, 450);
+    }
+
+    function baseMessage(name, idea) {
+      const n = (name || "").trim();
+      const i = (idea || "").trim();
+      const parts = [
+        "Заявка с сайта ВЕРСТАК",
+        n ? `Имя: ${n}` : "Имя: (не указано)",
+        i ? `Запрос: ${i}` : "Запрос: (не указан)",
+      ];
+      return parts.join("\n");
+    }
+
+    // ====== HERO CTA ======
+    document.getElementById("heroTelegram").addEventListener("click", (e) => {
+      e.preventDefault();
+      openTelegram("Здравствуйте! Хочу обсудить проект для мастерской «ВЕРСТАК».");
+    });
+
+    document.getElementById("contactTelegram").addEventListener("click", (e) => {
+      e.preventDefault();
+      openTelegram("Здравствуйте! Хочу обсудить проект для мастерской «ВЕРСТАК».");
+    });
+
+    // ====== FORM ======
+    const form = document.getElementById("leadForm");
+    const note = document.getElementById("formNote");
+    const copyBtn = document.getElementById("copyDraft");
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch {}
+        document.body.removeChild(ta);
+        return true;
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const idea = document.getElementById("idea").value;
+      const msg = baseMessage(name, idea);
+
+      await copyToClipboard(msg);
+      note.textContent = "Спасибо! Текст заявки скопирован. Сейчас откроется Telegram.";
+      openTelegram(msg);
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const name = document.getElementById("name").value;
+      const idea = document.getElementById("idea").value;
+      const msg = baseMessage(name, idea);
+
+      await copyToClipboard(msg);
+      note.textContent = "Текст заявки скопирован. Можно вставить в сообщение в Telegram.";
+      setTimeout(() => {
+        note.innerHTML = "Оставьте заявку — и Виктор свяжется с вами лично.<div style='margin-top:10px;opacity:.9;'>Виктор Ничков, мастерская «ВЕРСТАК»</div>";
+      }, 2800);
+    });
+
+    // ====== GALLERY MODAL ======
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modalImg");
+    const modalClose = document.getElementById("modalClose");
+
+    function openModal(src) {
+      modalImg.src = src;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      modalImg.src = "";
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".work").forEach(btn => {
+      btn.addEventListener("click", () => openModal(btn.dataset.full));
+    });
+
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
+
+    // ====== REVEAL ON SCROLL ======
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) en.target.classList.add("on");
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
